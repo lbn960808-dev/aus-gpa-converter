@@ -1,0 +1,9 @@
+{
+  "name": "default-project",
+  "version": "0.1.0",
+  "description": "Standardized full-stack project scaffold",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
