@@ -1,77 +1,35 @@
-# default-project
+# 打地鼠 WHACK-A-MOLE 🐹
 
-標準化全端專案範本（scaffold），包含 Python 後端與 Node.js 前端工具鏈的基礎設定，適用於開發複雜軟體專案。
+復古像素街機風的打地鼠網頁遊戲，可在瀏覽器直接遊玩。
 
-## 環境需求
+## 🔗 遊玩連結
 
-| 工具 | 版本 | 狀態 |
-| ---- | ---- | ---- |
-| [Git](https://git-scm.com/) | 2.50+ | ✅ 已安裝 |
-| [Python](https://www.python.org/) | 3.13 | ✅ 已安裝 |
-| [Node.js](https://nodejs.org/) | 24 LTS | ✅ 已安裝（透過 nvm） |
-| [npm](https://www.npmjs.com/) | 11 | ✅ 已安裝 |
-| [GitHub CLI](https://cli.github.com/) (`gh`) | 2.101 | ✅ 已安裝 |
-| [pre-commit](https://pre-commit.com/) | 4.6 | ✅ 已安裝 |
+**https://lbn960808-dev.github.io/whack-a-mole/**
 
-> `gh` 安裝於 `~/gh-cli`，Python 使用者工具位於 `~/Library/Python/3.13/bin`，
-> Node 由 `~/nvm`（nvm）管理。以上路徑已加入 `~/.zshrc`。
+## 玩法
 
-## 專案結構
+- 看到地鼠出現在格子裡就**打下去**！普通地鼠 10 分、金色地鼠 50 分
+- 連續命中累積 **COMBO**，連擊越高分數加乘越大（最高 ×5）
+- 打中空洞會重置連擊，別盲目連打
+- 三種難度：簡單／一般／困難
+- 最高分會記錄在本機（localStorage）
 
-```
-.
-├── .github/workflows/   # GitHub Actions CI
-├── docs/                # 專案文件
-├── scripts/             # 開發/部署腳本
-├── src/app/             # 應用程式主程式碼
-├── tests/               # 單元測試
-├── .editorconfig        # 編輯器統一設定
-├── .env.example         # 環境變數範本（複製為 .env 使用）
-├── .gitignore
-├── .pre-commit-config.yaml
-├── Makefile             # 常用開發指令
-├── package.json         # Node.js 專案設定
-└── pyproject.toml       # Python 專案設定
-```
+## 技術
 
-## 快速開始
+- 純前端：HTML + CSS + JavaScript（無框架、無相依套件）
+- 音效以 Web Audio API 即時合成，不需外部檔案
+- 地鼠為 16×16 像素點陣精靈（SVG rect 產生）
+- 響應式設計，支援滑鼠與觸控
+
+## 本機開發
 
 ```bash
-# 1. 建立虛擬環境並安裝依賴 + pre-commit
-scripts/bootstrap.sh
-# 或 make setup
-
-# 2. 設定環境變數
-cp .env.example .env
-
-# 3. 執行測試
-make test
-
-# 4. 執行程式
-make dev
+python3 -m http.server 8765
+# 開啟 http://localhost:8765
 ```
 
-## 常用指令
+或直接雙擊 `index.html`。
 
-| 指令 | 說明 |
-| ---- | ---- |
-| `make setup` | 建立虛擬環境、安裝依賴與 pre-commit |
-| `make test` | 執行 `pytest` 測試 |
-| `make lint` | 使用 `ruff` 檢查程式碼 |
-| `make format` | 使用 `ruff` 格式化程式碼 |
-| `make dev` | 啟動開發伺服器 |
+## 部署
 
-## 環境變數
-
-所有環境變數皆由根目錄的 `.env` 提供（詳見 `.env.example`），
-`.env` 已加入 `.gitignore`，請勿提交任何機密內容。
-
-## Git 流程
-
-- 分支以 `main` 為主，功能開發使用 feature branch。
-- Commit 前自動執行 pre-commit hooks（格式、檢查）。
-- Push 後由 GitHub Actions 執行 CI（矩陣測試 Python 3.11–3.13）。
-
-## 授權
-
-See [LICENSE](LICENSE)（如需要請補充）。
+使用 GitHub Pages（分支 `main` / 根目錄）自動發布，Push 到 `main` 即更新。`ci.yml` 為 CI 檢查。

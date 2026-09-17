@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#120a2e" />
+  <title>打地鼠 · WHACK-A-MOLE</title>
+  <meta name="description" content="復古街機風打地鼠遊戲：簡單畫風、現代設計、無限連打！" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='30' r='24' fill='%23c2884f'/%3E%3Ccircle cx='32' cy='34' r='15' fill='%23efd5b0'/%3E%3Ccircle cx='24' cy='24' r='4' fill='%231a1a1a'/%3E%3Ccircle cx='40' cy='24' r='4' fill='%231a1a1a'/%3E%3Ccircle cx='32' cy='31' r='5' fill='%23a86b3c'/%3E%3Crect x='27' y='40' width='4' height='6' fill='%23fff'/%3E%3Crect x='33' y='40' width='4' height='6' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="crt" aria-hidden="true"></div>
+  <main class="cabinet" id="cabinet">
+
+    <div class="marquee" aria-hidden="true">
+      <span>★ INSERT COIN ★ READY PLAYER ONE ★ 打地鼠 ★ WHACK-A-MOLE ★ 高分挑戰 ★ INSERT COIN ★ </span>
+      <span>★ INSERT COIN ★ READY PLAYER ONE ★ 打地鼠 ★ WHACK-A-MOLE ★ 高分挑戰 ★ INSERT COIN ★ </span>
+    </div>
+
+    <header class="topbar">
+      <div class="logo">
+        <span class="logo-zh">打地鼠</span>
+        <span class="logo-en">WHACK&nbsp;A&nbsp;MOLE</span>
+      </div>
+      <div class="hud" id="hud">
+        <div class="hud-item">
+          <span class="hud-label">SCORE</span>
+          <span class="hud-value" id="hud-score">0</span>
+        </div>
+        <div class="hud-item hud-combo" id="hud-combo-wrap">
+          <span class="hud-label">COMBO</span>
+          <span class="hud-value" id="hud-combo">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">TIME</span>
+          <span class="hud-value hud-time" id="hud-time">30</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="timebar"><div class="timebar-fill" id="timebar"></div></div>
+
+    <section class="board" id="board" aria-label="遊戲區域">
+      <!-- 9 個洞由 JS 產生 -->
+    </section>
+
+    <footer class="controls">
+      <button class="btn" id="btn-pause">⏸ 暫停</button>
+      <button class="btn ghost" id="btn-sound">🔊 音效</button>
+      <button class="btn ghost" id="btn-help">❓ 說明</button>
+    </footer>
+
+    <!-- START -->
+    <div class="overlay" id="screen-start">
+      <div class="panel">
+        <h2 class="panel-title">選擇難度</h2>
+        <div class="diff-grid" id="diff-grid">
+          <button class="diff" data-diff="easy"><b>簡單</b><em>30 秒 · 1 隻</em></button>
+          <button class="diff" data-diff="normal"><b>一般</b><em>45 秒 · 2 隻</em></button>
+          <button class="diff" data-diff="hard"><b>困難</b><em>60 秒 · 3 隻</em></button>
+        </div>
+        <div class="best-line">最佳紀錄 <b id="best-start">--</b></div>
+        <button class="btn primary big" id="btn-start">▶ 開始遊戲</button>
+      </div>
+    </div>
+
+    <!-- GAME OVER -->
+    <div class="overlay hidden" id="screen-over">
+      <div class="panel">
+        <h2 class="panel-title over-title">GAME OVER</h2>
+        <div class="score-big" id="final-score">0</div>
+        <div class="score-detail">
+          <span>連擊 <b id="final-combo">0</b></span>
+          <span>最高 <b id="final-best">0</b></span>
+          <span id="final-new" class="newtag hidden">🏆 新紀錄！</span>
+        </div>
+        <button class="btn primary big" id="btn-again">↻ 再玩一次</button>
+        <button class="btn ghost" id="btn-menu">▣ 回到選單</button>
+      </div>
+    </div>
+
+    <!-- PAUSE -->
+    <div class="overlay hidden" id="screen-pause">
+      <div class="panel">
+        <h2 class="panel-title">已暫停</h2>
+        <button class="btn primary big" id="btn-resume">▶ 繼續</button>
+        <button class="btn ghost" id="btn-pause-menu">▣ 回到選單</button>
+      </div>
+    </div>
+
+    <!-- HELP -->
+    <div class="overlay hidden" id="screen-help">
+      <div class="panel">
+        <h2 class="panel-title">玩法說明</h2>
+        <ul class="help-list">
+          <li>看到地鼠冒出來，<b>打下去</b>得分！</li>
+          <li>普通地鼠 <span class="chip chip-mole">10 分</span>，<b>金色地鼠</b> <span class="chip chip-gold">50 分</span></li>
+          <li>連續命中累積 <b>COMBO</b>，COMBO 越高分數加乘越大（up to ×5）</li>
+          <li>打中空洞會<b>重置連擊</b>，別盲目連打</li>
+          <li>時間結束即結算成績</li>
+        </ul>
+        <button class="btn primary big" id="btn-help-close">✕ 知道了</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
